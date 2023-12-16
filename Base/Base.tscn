@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwm8bhs34j56d"]
+
+[ext_resource type="Script" path="res://Base/Base.gd" id="1_sgupv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0slmm"]
+albedo_color = Color(1, 0.172549, 0.152941, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jitnu"]
+material = SubResource("StandardMaterial3D_0slmm")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 4.0
+radial_segments = 10
+
+[node name="Base" type="Node3D" groups=["Base"]]
+script = ExtResource("1_sgupv")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("CylinderMesh_jitnu")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+billboard = 1
+text = "99"
+font_size = 600
