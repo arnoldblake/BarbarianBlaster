@@ -2,7 +2,9 @@ extends Camera3D
 
 @export	var grid_map : GridMap
 @export var turret_manager : Node3D
+@export var turret_cost : int = 100
 @onready var ray :RayCast3D = $RayCast3D
+@onready var bank : MarginContainer = get_tree().get_first_node_in_group("Bank")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,15 +18,20 @@ func _process(_delta: float) -> void:
 	ray.force_raycast_update()
 
 	if ray.is_colliding():
-		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-		var collider = ray.get_collider()
-		if collider is GridMap:
-			if Input.is_action_pressed("click"):
-				var collision_point = ray.get_collision_point()
-				var cell = grid_map.local_to_map(collision_point)
-				if grid_map.get_cell_item(cell) == 0:
-					grid_map.set_cell_item(cell, 1)
-					var tile_position = grid_map.map_to_local(cell)
-					turret_manager.build_turret(tile_position)
+		if bank.gold >= turret_cost:
+			Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+			var collider = ray.get_collider()
+			if collider is GridMap:
+				if Input.is_action_pressed("click"):
+					var collision_point = ray.get_collision_point()
+					var cell = grid_map.local_to_map(collision_point)
+					if grid_map.get_cell_item(cell) == 0:
+						grid_map.set_cell_item(cell, 1)
+						var tile_position = grid_map.map_to_local(cell)
+						turret_manager.build_turret(tile_position)
+						bank.gold -= turret_cost
+		
+		else:
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	else:
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)

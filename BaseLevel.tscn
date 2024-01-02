@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d1kk4ufwc6ll6"]
+[gd_scene load_steps=16 format=3 uid="uid://d1kk4ufwc6ll6"]
 
 [ext_resource type="MeshLibrary" uid="uid://cg8anhbtaa3he" path="res://MeshLibraries/SpaceLibrary.tres" id="1_iqxgd"]
 [ext_resource type="PackedScene" uid="uid://ck0xr2xduaqpr" path="res://RayCamera/Ray_Camera.tscn" id="1_w6kk0"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dgskpchehf6id" path="res://Enemy/Enemy.tscn" id="4_6540i"]
 [ext_resource type="Script" path="res://TurretManager.gd" id="5_ujjnh"]
 [ext_resource type="PackedScene" uid="uid://owva6pga3q40" path="res://Turret/Turret.tscn" id="6_8aokb"]
+[ext_resource type="Script" path="res://Bank.gd" id="8_n2oc4"]
+[ext_resource type="PackedScene" uid="uid://84y5tr0nh0qa" path="res://DifficultyManager/difficulty_manager.tscn" id="9_r2v4e"]
+[ext_resource type="PackedScene" uid="uid://fktpueug5kat" path="res://UserInterface/victory_layer.tscn" id="10_ujw05"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6r0yt"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -27,6 +30,11 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
 }
 point_count = 7
+
+[sub_resource type="LabelSettings" id="LabelSettings_l7ilt"]
+font_size = 64
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
 
 [node name="BaseLevel" type="Node3D"]
 
@@ -53,10 +61,12 @@ data = {
 "cells": PackedInt32Array(65530, 0, 0, 65530, 1, 0, 65530, 65535, 0, 65530, 65534, 0, 65530, 65533, 0, 5, 0, 0, 5, 65533, 0, 5, 65534, 0, 5, 65535, 0, 5, 1, 0, 65530, 65532, 0, 65530, 65531, 0, 65530, 65530, 0, 4, 65530, 0, 5, 65531, 0, 5, 65530, 0, 3, 65530, 0, 2, 65530, 0, 1, 65530, 0, 0, 65530, 0, 65535, 65530, 0, 65534, 65530, 0, 65533, 65530, 0, 65532, 65530, 0, 65531, 65530, 0, 65535, 2, 0, 65530, 2, 0, 65531, 2, 0, 65533, 2, 0, 65534, 2, 0, 0, 2, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 65531, 65531, 0, 65531, 65532, 0, 65531, 65533, 0, 65531, 65534, 0, 65531, 65535, 0, 65531, 0, 0, 65531, 1, 0, 65533, 1, 0, 65533, 0, 0, 65533, 65535, 0, 65533, 65534, 0, 65533, 65533, 0, 65532, 65531, 0, 65533, 65531, 0, 65534, 65531, 0, 65535, 65531, 0, 0, 65531, 0, 1, 65531, 0, 2, 65531, 0, 3, 65531, 0, 4, 65531, 0, 0, 65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 65535, 65535, 0, 65535, 65534, 0, 65535, 65533, 0, 65535, 65532, 0, 65534, 1, 0, 65535, 1, 0, 0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 4, 0, 0, 3, 0, 0, 2, 0, 0, 2, 65535, 0, 3, 65535, 0, 4, 65535, 0, 4, 65534, 0, 3, 65534, 0, 2, 65534, 0, 2, 65533, 0, 3, 65533, 0, 4, 65533, 0)
 }
 
-[node name="EnemyPath" type="Path3D" parent="."]
+[node name="EnemyPath" type="Path3D" parent="." node_paths=PackedStringArray("difficulty_manager", "victory_layer")]
 curve = SubResource("Curve3D_25sd6")
 script = ExtResource("3_r7y5y")
 enemy_scene = ExtResource("4_6540i")
+difficulty_manager = NodePath("../DifficultyManager")
+victory_layer = NodePath("../VictoryLayer")
 
 [node name="Road" type="CSGPolygon3D" parent="EnemyPath"]
 polygon = PackedVector2Array(-1, 0, -1, 0.1, 1, 0.1, 1, 0)
@@ -66,7 +76,7 @@ path_interval_type = 0
 path_interval = 0.5
 path_simplify_angle = 0.0
 path_rotation = 2
-path_local = false
+path_local = true
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
@@ -79,7 +89,7 @@ path_interval_type = 0
 path_interval = 0.5
 path_simplify_angle = 0.0
 path_rotation = 2
-path_local = false
+path_local = true
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
@@ -92,7 +102,7 @@ path_interval_type = 0
 path_interval = 0.5
 path_simplify_angle = 0.0
 path_rotation = 2
-path_local = false
+path_local = true
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
@@ -109,4 +119,29 @@ script = ExtResource("5_ujjnh")
 turret = ExtResource("6_8aokb")
 enemy_path = NodePath("../EnemyPath")
 
+[node name="Bank" type="MarginContainer" parent="." groups=["Bank"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("8_n2oc4")
+
+[node name="Label" type="Label" parent="Bank"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Money"
+label_settings = SubResource("LabelSettings_l7ilt")
+
+[node name="DifficultyManager" parent="." instance=ExtResource("9_r2v4e")]
+
+[node name="VictoryLayer" parent="." instance=ExtResource("10_ujw05")]
+
 [connection signal="timeout" from="EnemyPath/Timer" to="EnemyPath" method="spawn_enemy"]
+[connection signal="stop_spawning_enemies" from="DifficultyManager" to="EnemyPath" method="_on_difficulty_manager_stop_spawning_enemies"]
